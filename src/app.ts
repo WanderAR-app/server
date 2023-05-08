@@ -4,6 +4,8 @@ import cors from 'cors';
 import session from "express-session";
 import bodyParser from 'body-parser';
 
+import authRouter from './routes/auth/auth';
+
 // Swagger and Yamljs
 // import swaggerUi from 'swagger-ui-express';
 // import YAML from 'yamljs';
@@ -36,6 +38,8 @@ app.use(session({
 
 // cors
 app.use(cors());
+
+app.use('/auth', authRouter);
 
 // swagger route
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
