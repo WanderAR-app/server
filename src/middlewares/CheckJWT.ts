@@ -17,3 +17,5 @@ const checkJWT = (req: Request, res: Response, next: NextFunction) => {
         });
     }
 }
+
+export default checkJWT;
