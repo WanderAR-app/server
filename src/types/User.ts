@@ -11,14 +11,14 @@ class User {
         this.password = password;
     }
 
-    save() {
+    async save() {
         try {
-            db.query('INSERT INTO users (email, password) VALUES (?, ?)', [this.email, this.password]);
+            await db.query('INSERT INTO users (email, password) VALUES (?, ?)', [this.email, this.password]);
 
-            if (this.id == null)
-                db.query('SELECT id FROM users WHERE email = ?', [this.email]).then((rows: any) => {
-                    this.id = rows[0].id;
-                });
+            if (this.id == null) {
+                const rows = await db.query('SELECT id FROM users WHERE email = ?', [this.email])
+                this.id = rows[0].id;
+            }
         } catch (err) {
             throw err;
         }

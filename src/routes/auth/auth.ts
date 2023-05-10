@@ -63,7 +63,7 @@ router.post('/register', async (req, res) => {
         const newUser = new User(null, email, hash);
         
         // Save user in database
-        newUser.save();
+        await newUser.save();
 
         const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
         return res.status(200).json({ "token": token });
