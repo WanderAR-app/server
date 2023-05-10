@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import User from '../../types/User';
 
 const router: Router = Router();
 const saltRounds = 10;
@@ -14,6 +15,27 @@ router.post('/login', async (req, res) => {
     else {
         // TODO: check if user exists in database
         // TODO: check if password is correct
+        let user: User | null = null;
+        
+        try {
+            user = await User.findByEmail(email);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ "message": "Internal server error" });
+        }
+
+        if (user == null)
+            return res.status(404).json({ "message": "User not found" });
+        else {
+            const match = bcrypt.compareSync(password, user.password);
+
+            if (!match)
+                return res.status(401).json({ "message": "Wrong password" });
+            else {
+                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+                return res.status(200).json({ "token": token });
+            }
+        }
     }
 });
 
@@ -24,17 +46,26 @@ router.post('/register', async (req, res) => {
     if (!email || !password)
         return res.status(400).json({ "message": "Invalid request" });
     else {
-        let user = null;
-        // TODO: check if user exists in database
-        if (user)
+        // Check if user exists in database
+        let user: User | null = null;
+        try {
+            user = await User.findByEmail(email)
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ "message": "Internal server error" });
+        }
+
+        if (user != null)
             return res.status(409).json({ "message": "User already exists" });
-        // TODO: hash password
+        // Hash password
         const salt = bcrypt.genSaltSync(saltRounds);
         const hash = bcrypt.hashSync(password, salt);
-        // TODO: save user in database
-        const newUser = null;
+        const newUser = new User(null, email, hash);
+        
+        // Save user in database
+        newUser.save();
 
-        const token = jwt.sign({ newUser }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
         return res.status(200).json({ "token": token });
     }
 });
