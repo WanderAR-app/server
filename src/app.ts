@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 
 import authRouter from './routes/auth/auth';
+import googleAuthRouter from './routes/auth/googleAuth';
 
 // Swagger and Yamljs
 // import swaggerUi from 'swagger-ui-express';
@@ -41,6 +42,7 @@ app.use(session({
 app.use(cors());
 
 app.use('/auth', authRouter);
+app.use('/auth', googleAuthRouter);
 
 // swagger route
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
