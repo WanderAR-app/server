@@ -1,0 +1,54 @@
+name: Build and Test
+
+on:
+  pull_request_target:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  verify-from-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Verify from dev
+        run: |
+          if [ "${{ github.event.pull_request.base.ref }}" !:  "dev" ]; then
+            echo "Merge request must come from dev branch."
+            exit 1
+          fi
+          echo "Merge request comes from dev branch."
+
+  build-and-test:
+    needs: verify-from-dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      #                       WAITING FOR DB DEPLOYMENT
+      # 
+      # - name: Run Jest tests
+      #   env:
+      #     PORT: ${{ secrets.PORT }}
+      #     JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      #     DB_HOST: ${{ secrets.DB_HOST }}
+      #     DB_PORT: ${{ secrets.DB_PORT }}
+      #     DB_USER: ${{ secrets.DB_USER }}
+      #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      #     DB_NAME: ${{ secrets.DB_NAME }}
+      #     GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      #     GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      #   run: npm run test
