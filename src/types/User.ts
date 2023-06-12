@@ -24,6 +24,24 @@ class User {
         }
     }
 
+    async updateEmail(email: string) {
+        try {
+            await db.query('UPDATE users SET email = ? WHERE id = ?', [email, this.id]);
+            this.email = email;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async updatePassword(password: string) {
+        try {
+            await db.query('UPDATE users SET password = ? WHERE id = ?', [password, this.id]);
+            this.password = password;
+        } catch (err) {
+            throw err;
+        }
+    }
+
     static async findByEmail(email: string) {
         const rows = await db.query('SELECT * FROM users WHERE email = ?', [email])
         
