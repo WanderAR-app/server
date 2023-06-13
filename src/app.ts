@@ -50,3 +50,5 @@ app.use('/admin/auth', adminAuthRouter);
 app.get('/', async (req, res) => {
     res.status(200).json({ "message": "Server is working !" })
 });
+
+export default app;
