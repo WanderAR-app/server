@@ -13,7 +13,7 @@ import adminAuthRouter from './routes/auth/admin';
 
 dotenv.config();
 const app: Express = express();
-const port = process.env.PORT || 8080;
+export const port = process.env.PORT || 8080;
 
 main();
 
