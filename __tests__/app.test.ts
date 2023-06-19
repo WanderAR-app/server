@@ -74,12 +74,18 @@ describe('database connection', () => {
     expect(emails).toEqual(expectedEmails);
     conn.end();
   });
+  test('should throw an error if the query fails', async () => { // la requete doit échouer car la table admins existe déjà
+    const query = `
+      CREATE TABLE admins (
+        id INT NOT NULL AUTO_INCREMENT UNIQUE,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        PRIMARY KEY (id)
+      );
+    `;
+    const params = [];
+    const conn = await pool.getConnection();
+    await expect(conn.query(query, params)).rejects.toThrow();
+    conn.end();
+  });
 });
-//   it('should throw an error if the query fails', async () => {
-//     const query = 'SELECT * FROM users WHERE id =?';
-//     const params = [100];
-
-//     const conn = await pool.getConnection();
-//     await expect(conn.query(query, params)).rejects.toThrow();
-//     conn.end();
-//   });
