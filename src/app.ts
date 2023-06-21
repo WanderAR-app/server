@@ -1,24 +1,20 @@
+require("dotenv").config();
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import session from "express-session";
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-
-import authRouter from './routes/auth/auth';
-import adminAuthRouter from './routes/auth/admin';
 
 // Swagger and Yamljs
 // import swaggerUi from 'swagger-ui-express';
 // import YAML from 'yamljs';
 
-dotenv.config();
 const app: Express = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 
 main();
 
 async function main() {
-    app.listen(port, () => {
+    app.listen(port, async () => {
         return console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
     });
 }
@@ -40,9 +36,6 @@ app.use(session({
 
 // cors
 app.use(cors());
-
-app.use('/auth', authRouter);
-app.use('/admin/auth', adminAuthRouter);
 
 // swagger route
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
