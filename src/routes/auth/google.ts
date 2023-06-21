@@ -7,7 +7,7 @@ import User from '../../types/User';
 const router = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-const verifyGoogleToken = async (token: string) => {
+const verifyGoogleToken = async (token: string) : Promise<User> => {
     const ticket = await client.verifyIdToken({
         idToken: token,
         audience: process.env.GOOGLE_CLIENT_ID
@@ -31,13 +31,17 @@ router.post('/login', async (req: any, res: any) => {
         });
     }
 
-    const googleUser = await verifyGoogleToken(token)
-            .catch((err: any) => {
-                return res.status(403).json({
-                    ok: false,
-                    err
-                });
-            });
+    let googleUser: null | User = null;
+
+    try {
+        googleUser = await verifyGoogleToken(token)
+    } catch(err: any) {
+        console.log(err)
+        return res.status(403).json({
+            ok: false,
+            err: err.message
+        }); 
+    }
 
     if (googleUser == null || googleUser.email == null)
         return res.status(403).json({
@@ -78,14 +82,17 @@ router.post('/register', async (req: any, res: any) => {
         });
     }
 
-    const googleUser = await verifyGoogleToken(token)
-            .catch((err: any) => {
-                console.log(err)
-                return res.status(403).json({
-                    ok: false,
-                    err
-                });
-            });
+    let googleUser: null | User = null;
+
+    try {
+        googleUser = await verifyGoogleToken(token)
+    } catch(err: any) {
+        console.log(err)
+        return res.status(403).json({
+            ok: false,
+            err: err.message
+        }); 
+    }
 
     if (googleUser == null || googleUser.email == null)
         return res.status(403).json({

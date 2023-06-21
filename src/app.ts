@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 import authRouter from './routes/auth/auth';
 import googleAuthRouter from './routes/auth/google';
+import adminAuthRouter from './routes/auth/admin';
 
 // Swagger and Yamljs
 // import swaggerUi from 'swagger-ui-express';
@@ -43,6 +44,7 @@ app.use(cors());
 
 app.use('/auth', authRouter);
 app.use('/auth/google', googleAuthRouter);
+app.use('/auth/admin', adminAuthRouter);
 
 // swagger route
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
