@@ -80,11 +80,20 @@ router.post('/register', async (req: any, res: any) => {
 
     const googleUser = await verifyGoogleToken(token)
             .catch((err: any) => {
+                console.log(err)
                 return res.status(403).json({
                     ok: false,
                     err
                 });
             });
+
+    if (googleUser == null || googleUser.email == null)
+        return res.status(403).json({
+            ok: false,
+            err: {
+                message: 'Invalid token'
+            }
+        });
 
     // Check if user exists in database
     let user: User | null = null;
