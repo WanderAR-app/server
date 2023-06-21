@@ -1,19 +1,24 @@
+import { type } from 'os';
 import db from '../database/mariadb';
+
+type ConnectedWith = 'google' | 'email';
 
 class User {
     id: number;
     email: string;
     password: string;
+    connectedWith: ConnectedWith;
 
-    constructor(id: number | null, email: string, password: string) {
+    constructor(id: number | null, email: string, password: string | null, connectedWith: ConnectedWith = 'email') {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.connectedWith = connectedWith;
     }
 
     async save() {
         try {
-            await db.query('INSERT INTO users (email, password) VALUES (?, ?)', [this.email, this.password]);
+            await db.query('INSERT INTO users (email, password, connected_with) VALUES (?, ?, ?)', [this.email, this.password, this.connectedWith]);
 
             if (this.id == null) {
                 const rows = await db.query('SELECT id FROM users WHERE email = ?', [this.email])
@@ -28,7 +33,7 @@ class User {
         const rows = await db.query('SELECT * FROM users WHERE email = ?', [email])
         
         if (rows.length == 1)
-            return new User(rows[0].id, rows[0].email, rows[0].password);
+            return new User(rows[0].id, rows[0].email, rows[0].password, rows[0].connected_with);
         else
             return null;
     }
@@ -37,7 +42,7 @@ class User {
         const rows = await db.query('SELECT * FROM users WHERE id = ?', [id])
         
         if (rows.length == 1)
-            return new User(rows[0].id, rows[0].email, rows[0].password);
+            return new User(rows[0].id, rows[0].email, rows[0].password, rows[0].connected_with);
         else
             return null;
     }
