@@ -29,6 +29,7 @@ The following tools were used in this project:
 
 - [Node.js](https://nodejs.org/en/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [Jest](https://jestjs.io/)
 
 ## :white_check_mark: Requirements ##
 
@@ -51,6 +52,9 @@ $ npm start
 
 # Run the project in development mode
 $ npm run dev
+
+# Run the tests
+$ npm run test
 
 # The server will initialize in the <http://localhost:8080>
 ```
