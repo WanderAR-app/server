@@ -57,7 +57,7 @@ router.post('/register', async (req, res) => {
 
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
-    const newUser = new User(null, firstName, lastName, email, hash, salt);
+    const newUser = new User(null, firstName, lastName, email, hash);
 
     // Save user to database
     try {

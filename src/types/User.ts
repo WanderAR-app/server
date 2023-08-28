@@ -5,15 +5,13 @@ class User {
     lastName: string;
     email: string;
     passwordHash: string;
-    passwordSalt: string;
 
-    constructor(id: number | null, firstName: string, lastName: string, email: string, passwordHash: string | null, passwordSalt: string | null) {
+    constructor(id: number | null, firstName: string, lastName: string, email: string, passwordHash: string | null) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.passwordHash = passwordHash;
-        this.passwordSalt = passwordSalt;
     }
 
     async save() {
@@ -26,8 +24,8 @@ class User {
                 this.id = rows[0].id;
             }
 
-            const sql2 = `INSERT INTO user_login_data (user_id, email, password_hash, password_salt) VALUES (?, ?, ?, ?)`;
-            await db.query(sql2, [this.id, this.email, this.passwordHash, this.passwordSalt]);
+            const sql2 = `INSERT INTO user_login_data (user_id, email, password_hash) VALUES (?, ?, ?, ?)`;
+            await db.query(sql2, [this.id, this.email, this.passwordHash]);
 
             return this;
         } catch (err) {
@@ -51,7 +49,7 @@ class User {
             }
 
             const userAccount = rows2[0];
-            return new User(userAccount.id, userAccount.first_name, userAccount.last_name, userLoginData.email, userLoginData.password_hash, userLoginData.password_salt);
+            return new User(userAccount.id, userAccount.first_name, userAccount.last_name, userLoginData.email, userLoginData.password_hash);
 
         } catch (err) {
             throw err;
@@ -75,7 +73,7 @@ class User {
             }
 
             const userLoginData = rows2[0];
-            return new User(userAccount.id, userAccount.first_name, userAccount.last_name, userLoginData.email, userLoginData.password_hash, userLoginData.password_salt);
+            return new User(userAccount.id, userAccount.first_name, userAccount.last_name, userLoginData.email, userLoginData.password_hash);
 
         } catch (err) {
             throw err;
@@ -96,7 +94,7 @@ class User {
                 }
 
                 const userLoginData = rows2[0];
-                users.push(new User(userAccount.id, userAccount.first_name, userAccount.last_name, userLoginData.email, userLoginData.password_hash, userLoginData.password_salt));
+                users.push(new User(userAccount.id, userAccount.first_name, userAccount.last_name, userLoginData.email, userLoginData.password_hash));
             }
 
             return users;
