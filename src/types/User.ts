@@ -24,7 +24,7 @@ class User {
                 this.id = rows[0].id;
             }
 
-            const sql2 = `INSERT INTO user_login_data (user_id, email, password_hash) VALUES (?, ?, ?, ?)`;
+            const sql2 = `INSERT INTO user_login_data (user_id, email, password_hash) VALUES (?, ?, ?)`;
             await db.query(sql2, [this.id, this.email, this.passwordHash]);
 
             return this;
