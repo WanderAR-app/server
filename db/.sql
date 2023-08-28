@@ -29,7 +29,7 @@ CREATE TABLE user_login_data_external (
 CREATE TABLE user_login_data (
     id INT NOT NULL AUTO_INCREMENT UNIQUE,
     user_id INT NOT NULL,
-    login_name VARCHAR(20) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     password_salt VARCHAR(100) NOT NULL,
     PRIMARY KEY (id),
