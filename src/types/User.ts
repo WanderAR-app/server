@@ -13,6 +13,7 @@ class User {
         this.lastName = lastName;
         this.email = email;
         this.passwordHash = passwordHash;
+        this.passwordSalt = passwordSalt;
     }
 
     async save() {
