@@ -16,6 +16,8 @@ CREATE TABLE external_provider (
     PRIMARY KEY (id)
 );
 
+INSERT INTO external_provider (name, ws_end_point) VALUES ('google', 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=');
+
 CREATE TABLE user_login_data_external (
     id INT NOT NULL AUTO_INCREMENT UNIQUE,
     user_id INT NOT NULL,
@@ -31,7 +33,6 @@ CREATE TABLE user_login_data (
     user_id INT NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    password_salt VARCHAR(100) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user_account(id)
 );
