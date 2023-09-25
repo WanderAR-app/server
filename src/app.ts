@@ -13,6 +13,9 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 // import YAML from 'yamljs';
 
+// Logging
+import morganMiddleware from './middlewares/morgan';
+
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 8080;
@@ -25,6 +28,7 @@ async function main() {
     });
 }
 
+app.use(morganMiddleware);
 
 // Express config
 app.use(bodyParser.urlencoded({
