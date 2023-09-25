@@ -1,4 +1,5 @@
 import winston from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 const getDate = () => {
     const date = new Date();
@@ -7,6 +8,14 @@ const getDate = () => {
 
 const { format } = winston;
 
+var transport: DailyRotateFile = new DailyRotateFile({
+    filename: 'logs/%DATE%.log',
+    datePattern: 'YYYY-MM-DD',
+    // zippedArchive: true,
+    // maxSize: '20m',
+    maxFiles: '14d',
+    level: 'http',
+});
 
 const logger = winston.createLogger({
     format: format.combine(
@@ -18,7 +27,8 @@ const logger = winston.createLogger({
     ),
     transports: [
         new winston.transports.Console(),
-        new winston.transports.File({ filename: `logs/${getDate()}.log`, level: 'http' }),
+        transport,
+        // new winston.transports.File({ filename: `logs/${getDate()}.log`, level: 'http' }),
     ]
 });
 
