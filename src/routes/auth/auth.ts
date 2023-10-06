@@ -1,3 +1,132 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *           - id
+ *           - firstName
+ *           - lastName
+ *           - email
+ *           - passwordHash
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The user ID
+ *         firstName:
+ *           type: string
+ *           description: The user's first name
+ *         lastName:
+ *           type: string
+ *           description: The user's last name
+ *         email:
+ *           type: string
+ *           description: The user's email
+ *         passwordHash:
+ *           type: string
+ *           description: The user's password hash
+ *       example:
+ *         id: 1
+ *         firstName: John
+ *         lastName: Doe
+ *         email: john.doe@gmail.com
+ *         passwordHash: $***
+ */ 
+
+/**
+ * @swagger
+ * tags:
+ *  name: Auth
+ *  description: Authentification managing API
+ * /auth/login:
+ *   post:
+ *     summary: Login to the application
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *          schema:
+ *           type: object
+ *           required:
+ *              - email
+ *              - password
+ *           properties:
+ *            email:
+ *              type: string
+ *              description: The user's email
+ *            password:
+ *              type: string
+ *              description: The user's password
+ *     responses:
+ *       200:
+ *         description: The user was successfully logged in.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: The user's token
+ *       400:
+ *         description: Invalid request
+ *       401:
+ *         description: Wrong password
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ * 
+ * /auth/register:
+ *   post:
+ *     summary: Register to the application
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *          schema:
+ *           type: object
+ *           required:
+ *              - email
+ *              - password
+ *              - lastName
+ *              - firstName
+ *           properties:
+ *            email:
+ *              type: string
+ *              description: The user's email
+ *            password:
+ *              type: string
+ *              description: The user's password
+ *            lastName:
+ *              type: string
+ *              description: The user's last name
+ *            firstName:
+ *              type: string
+ *              description: The user's first name
+ *     responses:
+ *       200:
+ *         description: The user was successfully registered.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: The user's token
+ *       400:
+ *         description: Invalid request
+ *       409:
+ *         description: User already registered
+ *       500:
+ *         description: Internal server error
+ *         
+ */
+
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
