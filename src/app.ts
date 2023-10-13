@@ -47,6 +47,10 @@ app.use(session({
 // cors
 app.use(cors());
 
+app.use('/auth', authRouter);
+app.use('/auth/google', googleAuthRouter);
+app.use('/auth/admin', adminAuthRouter);
+
 // swagger route
 const options = {
     definition: {
