@@ -71,8 +71,8 @@ jobs:
                 script: |
                     cd server
                     if [ "$(docker ps -q -f name=backend-client)" ]; then
-                      docker-compose down
-                      docker-compose pull
+                      docker compose down
+                      docker compose pull
                     fi
                       docker-compose up -d
 
