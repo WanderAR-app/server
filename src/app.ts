@@ -5,12 +5,16 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 
 import authRouter from './routes/auth/auth';
-import googleAuthRouter from './routes/auth/google';
-import adminAuthRouter from './routes/auth/admin';
+// import googleAuthRouter from './routes/auth/google';
+// import adminAuthRouter from './routes/auth/admin';
 
 // Swagger and Yamljs
-// import swaggerUi from 'swagger-ui-express';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
 // import YAML from 'yamljs';
+
+// Logging
+import morganMiddleware from './middlewares/morgan';
 
 dotenv.config();
 const app: Express = express();
@@ -24,6 +28,7 @@ async function main() {
     });
 }
 
+app.use(morganMiddleware);
 
 // Express config
 app.use(bodyParser.urlencoded({
@@ -47,7 +52,31 @@ app.use('/auth/google', googleAuthRouter);
 app.use('/auth/admin', adminAuthRouter);
 
 // swagger route
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const options = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "WanderAR API",
+            version: "1.0.0",
+            description: "WanderAR app API",
+        },
+        servers: [
+            {
+                url: "http://localhost:" + port,
+            },
+        ],
+    },
+    apis: ["./src/routes/auth/*.ts"],
+};
+
+const specs = swaggerJSDoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+
+app.use('/auth', authRouter);
+// app.use('/auth/google', googleAuthRouter);
+// app.use('/auth/admin', adminAuthRouter);
 
 app.get('/', async (req, res) => {
     res.status(200).json({ "message": "Server is working !" })
