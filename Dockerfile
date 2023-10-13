@@ -1,0 +1,39 @@
+FROM node:16
+
+# Arguments
+ARG PORT
+ARG JWT_SECRET
+ARG DB_HOST
+ARG DB_PORT
+ARG DB_USER
+ARG DB_PASSWORD
+ARG DB_NAME
+ARG GOOGLE_CLIENT_ID
+ARG GOOGLE_CLIENT_SECRET
+
+# Environment variables
+ENV PORT=$PORT
+ENV JWT_SECRET=$JWT_SECRET
+ENV DB_HOST=$DB_HOST
+ENV DB_PORT=$DB_PORT
+ENV DB_USER=$DB_USER
+ENV DB_PASSWORD=$DB_PASSWORD
+ENV DB_NAME=$DB_NAME
+ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+
+# Create app directory and set it as the working directory
+WORKDIR /app
+COPY . .
+
+# Install app dependencies
+RUN npm i
+
+# Build the app
+RUN npm run build
+
+# Expose the port
+EXPOSE $PORT
+
+# Run the app
+CMD ["npm", "start"]
