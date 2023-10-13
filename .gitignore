@@ -128,4 +128,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-.DS_Store
+
+# Mac useless file created on modification
+*.DS_Store
