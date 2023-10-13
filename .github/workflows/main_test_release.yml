@@ -19,6 +19,8 @@ jobs:
       - name: Verify from dev
         run: |
           if [ "${{ github.event.pull_request.head.ref }}" !=  "dev" ]; then
+            echo "The pull request is from ${{ github.event.pull_request.head.ref }} branch."
+            echo "The pull request is to ${{ github.event.pull_request.base.ref }} branch."
             echo "Merge request must come from dev branch."
             exit 1
           fi
