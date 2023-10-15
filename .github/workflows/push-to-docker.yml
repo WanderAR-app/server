@@ -67,7 +67,7 @@ jobs:
               with:
                 host: ${{ secrets.IP_VPS_EPITECH_1 }}
                 username: ${{ secrets.USER_VPS_EPITECH_1 }}
-                key: ${{ secrets.PW_VPS_EPITECH_1 }}
+                key: ${{ secrets.KEY_VPS_EPITECH_1 }}
                 port: ${{ secrets.PORT_VPS_EPITECH_1 }}
                 script: |
                     cd backend-client
