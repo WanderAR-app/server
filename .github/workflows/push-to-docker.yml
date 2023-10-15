@@ -45,7 +45,7 @@ jobs:
                     context: .
                     push: true
                     tags: wanderar/backend-client:latest
-                    platforms: linux/amd64,linux/arm64
+                    platforms: linux/amd64
                     build-args: |
                         PORT=${{ secrets.PORT }}
                         JWT_SECRET=${{ secrets.JWT_SECRET }}
@@ -57,7 +57,7 @@ jobs:
                         GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
                         GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
 
-    update-deplyment:
+    update-deployment:
         needs: docker
         runs-on: ubuntu-latest
     
