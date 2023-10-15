@@ -63,13 +63,14 @@ jobs:
     
         steps:
             - name: Update docker-compose
-              uses: appleboy/ssh-action@master
+              uses: appleboy/ssh-action@v1.0.0
               with:
                 host: ${{ secrets.IP_VPS_EPITECH_1 }}
                 username: ${{ secrets.USER_VPS_EPITECH_1 }}
                 key: ${{ secrets.PW_VPS_EPITECH_1 }}
+                port: ${{ secrets.PORT_VPS_EPITECH_1 }}
                 script: |
-                    cd server
+                    cd backend-client
                     if [ "$(docker ps -q -f name=backend-client)" ]; then
                       docker compose down
                       docker compose pull
