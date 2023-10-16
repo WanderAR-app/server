@@ -44,7 +44,9 @@ jobs:
                 with:
                     context: .
                     push: true
-                    tags: wanderar/backend-client:latest
+                    tags: |
+                        wanderar/backend-client:latest
+                        wanderar/backend-client:${{ github.event.pull_request.title }}
                     platforms: linux/amd64
                     build-args: |
                         PORT=${{ secrets.PORT }}
