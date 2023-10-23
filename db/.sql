@@ -142,9 +142,7 @@ CREATE TABLE favorite (
     id INT NOT NULL AUTO_INCREMENT UNIQUE,
     user_id INT NOT NULL,
     pin_point_id INT NOT NULL,
-    location_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user_account(id),
-    FOREIGN KEY (pin_point_id) REFERENCES pin_point(id),
-    FOREIGN KEY (location_id) REFERENCES location(id)
+    FOREIGN KEY (pin_point_id) REFERENCES pin_point(id)
 );

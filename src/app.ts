@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import authRouter from "./routes/auth/auth";
 // import googleAuthRouter from './routes/auth/google';
 // import adminAuthRouter from './routes/auth/admin';
-import FavoriteRouter from "./routes/auth/favorites";
+import FavoriteRouter from "./routes/favorites";
 
 // Swagger and Yamljs
 import swaggerUi from "swagger-ui-express";

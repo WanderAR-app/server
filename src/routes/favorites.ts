@@ -1,5 +1,5 @@
 import { Router } from "express";
-import db from "../../database/mariadb";
+import db from "../database/mariadb";
 
 const FavoriteRouter: Router = Router();
 
@@ -11,10 +11,9 @@ FavoriteRouter.get("/", async (req, res) => {
 
   try {
     const rows = await db.query(
-      "SELECT * FROM user_favorites WHERE user_id = ? AND location_id = ?",
+      "SELECT f.* FROM favorite AS f INNER JOIN pin_point AS pp ON f.pin_point_id = pp.id INNER JOIN room AS r ON pp.room_id = r.id WHERE f.user_id = ? AND r.location_id = ?;",
       [userId, locationId]
     );
-
     return res.status(200).json(rows);
   } catch (err) {
     console.log(err);
@@ -24,16 +23,22 @@ FavoriteRouter.get("/", async (req, res) => {
 
 FavoriteRouter.post("/", async (req, res) => {
   const userId = req.body.decoded.id;
-  const locationId = req.body.locationId;
   const pinPointId = req.body.pinPointId;
 
-  if (!userId || !locationId)
+  if (!userId || !pinPointId)
     return res.status(400).json({ message: "Invalid request" });
 
   try {
+    const pin_point = await db.query(
+      "SELECT * FROM pin_point WHERE id = ?",
+      pinPointId
+    );
+    if (pin_point.length == 0)
+      return res.status(400).json({ message: "Invalid request" });
+
     const rows = await db.query(
-      "INSERT INTO user_favorites (user_id, location_id, pin_point_id) VALUES (?, ?, ?)",
-      [userId, locationId, pinPointId]
+      "INSERT INTO user_favorites (user_id, pin_point_id) VALUES (?, ?);",
+      [userId, pinPointId]
     );
 
     return res.status(200).json(rows);
@@ -45,16 +50,15 @@ FavoriteRouter.post("/", async (req, res) => {
 
 FavoriteRouter.delete("/", async (req, res) => {
   const userId = req.body.decoded.id;
-  const locationId = req.body.locationId;
   const pinPointId = req.body.pinPointId;
 
-  if (!userId || !locationId)
+  if (!userId || !pinPointId)
     return res.status(400).json({ message: "Invalid request" });
 
   try {
     const rows = await db.query(
-      "DELETE FROM user_favorites WHERE user_id = ? AND location_id = ? AND pin_point_id = ?",
-      [userId, locationId, pinPointId]
+      "DELETE FROM user_favorites WHERE user_id = ? AND pin_point_id = ?",
+      [userId, pinPointId]
     );
 
     return res.status(200).json(rows);
