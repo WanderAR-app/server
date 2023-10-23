@@ -7,6 +7,8 @@ import dotenv from "dotenv";
 import authRouter from "./routes/auth/auth";
 // import googleAuthRouter from './routes/auth/google';
 // import adminAuthRouter from './routes/auth/admin';
+import PinPointsRouter from "./routes/pinpoints";
+import RoomsRouter from "./routes/rooms";
 import FavoriteRouter from "./routes/favorites";
 
 // Swagger and Yamljs
@@ -16,6 +18,8 @@ import swaggerJSDoc from "swagger-jsdoc";
 
 // Logging
 import morganMiddleware from "./middlewares/morgan";
+
+// Middlewares
 import checkJWT from "./middlewares/CheckJWT";
 
 dotenv.config();
@@ -81,6 +85,8 @@ app.use("/auth", authRouter);
 // app.use('/auth/google', googleAuthRouter);
 // app.use('/auth/admin', adminAuthRouter);
 
+app.use("/pinpoints", checkJWT, PinPointsRouter);
+app.use("/rooms", checkJWT, RoomsRouter);
 app.use("/favorites", checkJWT, FavoriteRouter);
 
 app.get("/", async (req, res) => {
