@@ -11,7 +11,11 @@ FavoriteRouter.get("/", async (req, res) => {
 
   try {
     const rows = await db.query(
-      "SELECT f.* FROM favorite AS f INNER JOIN pin_point AS pp ON f.pin_point_id = pp.id INNER JOIN room AS r ON pp.room_id = r.id WHERE f.user_id = ? AND r.location_id = ?;",
+      `SELECT f.* 
+      FROM favorite AS f 
+      INNER JOIN pin_point AS pp ON f.pin_point_id = pp.id 
+      INNER JOIN room AS r ON pp.room_id = r.id 
+      WHERE f.user_id = ? AND r.location_id = ?;`,
       [userId, locationId]
     );
     return res.status(200).json(rows);
