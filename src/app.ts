@@ -7,8 +7,9 @@ import dotenv from "dotenv";
 import authRouter from "./routes/auth/auth";
 // import googleAuthRouter from './routes/auth/google';
 // import adminAuthRouter from './routes/auth/admin';
-import PinPointsRouter from "./routes/pinPoints";
+import PinPointsRouter from "./routes/pinpoints";
 import RoomsRouter from "./routes/rooms";
+import FavoriteRouter from "./routes/favorites";
 
 // Swagger and Yamljs
 import swaggerUi from "swagger-ui-express";
@@ -86,6 +87,7 @@ app.use("/auth", authRouter);
 
 app.use("/pinpoints", checkJWT, PinPointsRouter);
 app.use("/rooms", checkJWT, RoomsRouter);
+app.use("/favorites", checkJWT, FavoriteRouter);
 
 app.get("/", async (req, res) => {
   res.status(200).json({ message: "Server is working !" });
