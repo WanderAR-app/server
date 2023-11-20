@@ -1,8 +1,8 @@
 /**
  * @swagger
- * tags: [Categories]
- * name: Categories
- * description: Categories managing API
+ * tags:
+ *   name: Categories
+ *   description: Categories managing API
  * /societies/{id}/locations/{locId}/categories:
  *  get:
  *    summary: Get all categories of a location
@@ -61,6 +61,8 @@
  *    responses:
  *     200:
  *      description: Successfully created
+ *     400:
+ *      description: Invalid request
  *     500:
  *      description: Internal server error 
  * 
@@ -151,6 +153,8 @@
  *     responses:
  *      200:
  *       description: Successfully updated
+ *      400:
+ *       description: Invalid request
  *      500:
  *       description: Internal server error
  * 

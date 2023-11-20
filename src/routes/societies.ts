@@ -1,3 +1,130 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Societies
+ *   description: Societies managing API
+ * /societies:
+ *   get:
+ *    summary: Get all societies
+ *    tags: [Societies]
+ *    responses:
+ *     200:
+ *      description: The list of societies
+ *      content:
+ *       application/json:
+ *        schema:
+ *         type: array
+ *         items:
+ *           type: object
+ *           properties:
+ *            id:
+ *             type: integer
+ *             description: The society ID
+ *            name:
+ *             type: string
+ *             description: The society name
+ *     500:
+ *      description: Internal server error
+ * 
+ *   post:
+ *    summary: Create a new society
+ *    tags: [Societies]
+ *    requestBody:
+ *     required: true
+ *     content:
+ *      application/json:
+ *       schema:
+ *        type: object
+ *        required:
+ *          - name
+ *        properties:
+ *         name:
+ *          type: string
+ *          description: The society name
+ *    responses:
+ *     200:
+ *      description: The society was successfully created
+ *     400:
+ *      description: Invalid request
+ *     500:
+ *      description: Internal server error
+ * 
+ * /societies/{id}:
+ *   get:
+ *    summary: Get a society by ID
+ *    tags: [Societies]
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: integer
+ *        required: true
+ *        description: The society ID
+ *    responses:
+ *     200:
+ *      description: The society description by ID
+ *      content:
+ *       application/json:
+ *        schema:
+ *         type: object
+ *         properties:
+ *          id:
+ *           type: integer
+ *           description: The society ID
+ *          name:
+ *           type: string
+ *           description: The society name
+ *     500:
+ *      description: Internal server error
+ * 
+ *   put:
+ *    summary: Update a society by ID
+ *    tags: [Societies]
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: integer
+ *        required: true
+ *        description: The society ID
+ *    requestBody:
+ *     required: true
+ *     content:
+ *      application/json:
+ *       schema:
+ *        type: object
+ *        required:
+ *          - name
+ *        properties:
+ *         name:
+ *          type: string
+ *          description: The society name
+ *    responses:
+ *     200:
+ *      description: The society was successfully updated
+ *     400:
+ *      description: Invalid request
+ *     500:
+ *      description: Internal server error
+ * 
+ *   delete:
+ *    summary: Delete a society by ID
+ *    tags: [Societies]
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: integer
+ *        required: true
+ *        description: The society ID
+ *    responses:
+ *     200:
+ *      description: The society was successfully deleted
+ *     500:
+ *      description: Internal server error
+ *    
+ */
+
 import { Router } from "express";
 import db from "../database/mariadb";
 import logger from "../utils/logger";
