@@ -77,7 +77,7 @@ const options = {
       },
     ],
   },
-  apis: ["./src/routes/auth/*.ts"],
+  apis: ["./src/routes/auth/*.ts", "./src/routes/*.ts"],
 };
 
 const specs = swaggerJSDoc(options);

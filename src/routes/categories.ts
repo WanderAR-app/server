@@ -1,3 +1,189 @@
+/**
+ * @swagger
+ * tags: [Categories]
+ * name: Categories
+ * description: Categories managing API
+ * /societies/{id}/locations/{locId}/categories:
+ *  get:
+ *    summary: Get all categories of a location
+ *    tags: [Categories]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: The society ID
+ *      - in: path
+ *        name: locId
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: The location ID
+ *    responses:
+ *     200:
+ *      description: The list of categories
+ *     500:
+ *      description: Internal server error
+ * 
+ *  post:
+ *    summary: Create a new category
+ *    tags: [Categories]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: The society ID
+ *      - in: path
+ *        name: locId
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: The location ID
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *         schema:
+ *          type: object
+ *          required:
+ *           - name
+ *           - color
+ *          properties:
+ *           name:
+ *             type: string
+ *             description: The category name
+ *           color:
+ *            type: string
+ *            description: The category color
+ *    responses:
+ *     200:
+ *      description: Successfully created
+ *     500:
+ *      description: Internal server error 
+ * 
+ * /societies/{id}/locations/{locId}/categories/{catId}:
+ *   get:
+ *     summary: Get a category of a location
+ *     tags: [Categories]
+ *     parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: integer
+ *          required: true
+ *          description: The society ID
+ *        - in: path
+ *          name: locId
+ *          schema:
+ *            type: integer
+ *          required: true
+ *          description: The location ID
+ *        - in: path
+ *          name: catId
+ *          schema:
+ *            type: integer
+ *          required: true
+ *          description: The category ID
+ *     responses:
+ *       200:
+ *         description: The category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: The category ID
+ *                 name:
+ *                   type: string
+ *                   description: The category name
+ *                 color:
+ *                   type: string
+ *                   description: The category color
+ *                 location_id:
+ *                   type: integer
+ *                   description: The location ID
+ *       500:
+ *         description: Internal server error
+ * 
+ *   put:
+ *     summary: Update a category
+ *     tags: [Categories]
+ *     parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: integer
+ *          required: true
+ *          description: The society ID
+ *        - in: path
+ *          name: locId
+ *          schema:
+ *            type: integer
+ *          required: true
+ *          description: The location ID
+ *        - in: path
+ *          name: catId
+ *          schema:
+ *            type: integer
+ *          required: true
+ *          description: The category ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *          schema:
+ *           type: object
+ *           required:
+ *            - name
+ *            - color
+ *           properties:
+ *            name:
+ *              type: string
+ *              description: The category name
+ *            color:
+ *             type: string
+ *             description: The category color
+ *     responses:
+ *      200:
+ *       description: Successfully updated
+ *      500:
+ *       description: Internal server error
+ * 
+ *   delete:
+ *     summary: Delete a category
+ *     tags: [Categories]
+ *     parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: integer
+ *           required: true
+ *           description: The society ID
+ *         - in: path
+ *           name: locId
+ *           schema:
+ *             type: integer
+ *           required: true
+ *           description: The location ID
+ *         - in: path
+ *           name: catId
+ *           schema:
+ *             type: integer
+ *           required: true
+ *           description: The category ID
+ *     responses:
+ *      200:
+ *       description: Successfully deleted
+ *      500:
+ *       description: Internal server error
+ * 
+ */
+
 import { Router } from "express";
 import db from "../database/mariadb";
 import logger from "../utils/logger";
