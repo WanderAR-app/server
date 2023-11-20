@@ -47,7 +47,6 @@ CREATE TABLE location (
     id INT NOT NULL AUTO_INCREMENT UNIQUE,
     society_id INT NOT NULL,
     name VARCHAR(250) UNIQUE NOT NULL,
-    map_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (society_id) REFERENCES society(id)
 );
@@ -81,9 +80,6 @@ CREATE TABLE map (
     PRIMARY KEY (id),
     FOREIGN KEY (location_id) REFERENCES location(id)
 );
-
-ALTER TABLE location ADD COLUMN map_id INT NOT NULL;
-ALTER TABLE location ADD FOREIGN KEY (map_id) REFERENCES map(id);
 
 CREATE TABLE map_tile (
     id INT NOT NULL AUTO_INCREMENT UNIQUE,
