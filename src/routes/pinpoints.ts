@@ -22,26 +22,26 @@ PinPointsRouter.get("/", async (req, res) => {
   }
 });
 
-PinPointsRouter.get("/rooms", async (req, res) => {
-  const userId = req.body.decoded.id;
-  const locationId = req.body.locationId;
+// PinPointsRouter.get("/rooms", async (req, res) => {
+//   const userId = req.body.decoded.id;
+//   const locationId = req.body.locationId;
 
-  if (!userId) return res.status(400).json({ message: "Invalid request" });
+//   if (!userId) return res.status(400).json({ message: "Invalid request" });
 
-  try {
-    const query = `SELECT pp.* 
-      FROM pin_point AS pp 
-      INNER JOIN room AS r ON pp.room_id = r.id
-      INNER JOIN type AS t ON pp.type_id = t.id
-      WHERE r.location_id = ?
-      AND (LOWER(t.name) = 'room')`;
-    const rows = await db.query(query, [locationId]);
-    return res.status(200).json(rows);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-});
+//   try {
+//     const query = `SELECT pp.*
+//       FROM pin_point AS pp
+//       INNER JOIN room AS r ON pp.room_id = r.id
+//       INNER JOIN type AS t ON pp.type_id = t.id
+//       WHERE r.location_id = ?
+//       AND (LOWER(t.name) = 'room')`;
+//     const rows = await db.query(query, [locationId]);
+//     return res.status(200).json(rows);
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 
 PinPointsRouter.post("/", async (req, res) => {
   const location_id = req.body.locationId;

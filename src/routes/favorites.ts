@@ -15,8 +15,10 @@ FavoriteRouter.get("/", async (req, res) => {
       FROM favorite AS f 
       INNER JOIN pin_point AS pp ON f.pin_point_id = pp.id 
       INNER JOIN room AS r ON pp.room_id = r.id 
-      WHERE f.user_id = ? AND r.location_id = ?;`,
-      [userId, locationId]
+      WHERE f.user_id = ?` + locationId
+        ? `AND r.location_id = ?;`
+        : ";",
+      locationId ? [userId, locationId] : [userId]
     );
     return res.status(200).json(rows);
   } catch (err) {
@@ -52,9 +54,9 @@ FavoriteRouter.post("/", async (req, res) => {
   }
 });
 
-FavoriteRouter.delete("/", async (req, res) => {
+FavoriteRouter.delete("/:id", async (req, res) => {
   const userId = req.body.decoded.id;
-  const pinPointId = req.body.pinPointId;
+  const pinPointId = req.params.id;
 
   if (!userId || !pinPointId)
     return res.status(400).json({ message: "Invalid request" });
