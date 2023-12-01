@@ -137,7 +137,7 @@ router.get("/", async (req, res) => {
         return res.status(200).json(rows);
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
@@ -149,7 +149,7 @@ router.get("/:id", async (req, res) => {
         return res.status(200).json(rows);
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
@@ -158,17 +158,17 @@ router.post("/", async (req, res) => {
 
     console.log(name);
 
-    if (!name) return res.status(400).json({ message: "Invalid request" });
+    if (!name) return res.status(401).json({ message: "Invalid request" });
 
     try {
         const rows = await db.query(
             "INSERT INTO society (name) VALUES (?);",
             name
         );
-        return res.status(200).send();
+        return res.status(200).json({ message: "Society created" });
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error: ", err });
     }
 });
 
@@ -177,10 +177,12 @@ router.delete("/:id", async (req, res) => {
 
     try {
         const rows = await db.query("DELETE FROM society WHERE id = ?", id);
-        return res.status(200).send();
+        
+        if (rows.affectedRows === 0) return res.status(404).json({ message: "Society not found" });
+        return res.status(200).json({ message: "Society deleted" });
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
@@ -195,7 +197,9 @@ router.put("/:id", async (req, res) => {
             "UPDATE society SET name = ? WHERE id = ?",
             [name, id]
         );
-        return res.status(200).send();
+        
+        if (rows.affectedRows === 0) return res.status(404).json({ message: "Society not found" });
+        return res.status(200).json({ message: "Society updated" });
     } catch (err) {
         logger.error(err);
         return res.status(500).json({ message: "Internal server error" });
