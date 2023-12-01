@@ -194,8 +194,7 @@ import logger from "../utils/logger";
 
 const router: Router = Router();
 
-router.get("/societies/:id/locations/:locId/categories", async (req, res) => {
-    const id = req.params.id;
+router.get("/locations/:locId/categories", async (req, res) => {
     const locId = req.params.locId;
 
     try {
@@ -203,12 +202,11 @@ router.get("/societies/:id/locations/:locId/categories", async (req, res) => {
         return res.status(200).json(rows);
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
-router.get("/societies/:id/locations/:locId/categories/:catId", async (req, res) => {
-    const id = req.params.id;
+router.get("/locations/:locId/categories/:catId", async (req, res) => {
     const locId = req.params.locId;
     const catId = req.params.catId;
 
@@ -217,12 +215,11 @@ router.get("/societies/:id/locations/:locId/categories/:catId", async (req, res)
         return res.status(200).json(rows);
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
-router.post("/societies/:id/locations/:locId/categories", async (req, res) => {
-    const id = req.params.id;
+router.post("/locations/:locId/categories", async (req, res) => {
     const locId = req.params.locId;
 
     const name = req.body.name;
@@ -235,15 +232,14 @@ router.post("/societies/:id/locations/:locId/categories", async (req, res) => {
             "INSERT INTO category (name, color, location_id) VALUES (?, ?, ?);",
             [name, color, locId]
         );
-        return res.status(200).send();
+        return res.status(200).json({ message: "Category created" });
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
-router.put("/societies/:id/locations/:locId/categories/:catId", async (req, res) => {
-    const id = req.params.id;
+router.put("/locations/:locId/categories/:catId", async (req, res) => {
     const locId = req.params.locId;
     const catId = req.params.catId;
 
@@ -257,24 +253,27 @@ router.put("/societies/:id/locations/:locId/categories/:catId", async (req, res)
             "UPDATE category SET name = ?, color = ? WHERE id = ? AND location_id = ?;",
             [name, color, catId, locId]
         );
-        return res.status(200).send();
+
+        if (rows.affectedRows === 0) return res.status(404).json({ message: "Category not found" });
+        return res.status(200).json({ message: "Category updated" });
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
-router.delete("/societies/:id/locations/:locId/categories/:catId", async (req, res) => {
-    const id = req.params.id;
+router.delete("locations/:locId/categories/:catId", async (req, res) => {
     const locId = req.params.locId;
     const catId = req.params.catId;
 
     try {
         const rows = await db.query("DELETE FROM category WHERE id = ? AND location_id = ?", [catId, locId]);
-        return res.status(200).send();
+
+        if (rows.affectedRows === 0) return res.status(404).json({ message: "Category not found" });
+        return res.status(200).json({ message: "Category deleted" });
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 

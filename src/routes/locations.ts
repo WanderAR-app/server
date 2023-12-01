@@ -177,7 +177,7 @@ router.get("/societies/:id/locations", async (req, res) => {
         return res.status(200).json(rows);
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
@@ -190,7 +190,7 @@ router.get("/societies/:id/locations/:locId", async (req, res) => {
         return res.status(200).json(rows);
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
@@ -209,7 +209,7 @@ router.post("/societies/:id/locations", async (req, res) => {
         return res.status(200).send();
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
@@ -219,10 +219,12 @@ router.delete("/societies/:id/locations/:locId", async (req, res) => {
 
     try {
         const rows = await db.query("DELETE FROM location WHERE id = ? AND society_id = ?", [locId, id]);
-        return res.status(200).send();
+
+        if (rows.affectedRows === 0) return res.status(404).json({ message: "Location not found" });
+        return res.status(200).json({ message: "Location deleted" });
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
@@ -239,10 +241,12 @@ router.put("/societies/:id/locations/:locId", async (req, res) => {
             "UPDATE location SET name = ? WHERE id = ? AND society_id = ?;",
             [name, locId, id]
         );
-        return res.status(200).send();
+
+        if (rows.affectedRows === 0) return res.status(404).json({ message: "Location not found" });
+        return res.status(200).json({ message: "Location updated" });
     } catch (err) {
         logger.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", err });
     }
 });
 
