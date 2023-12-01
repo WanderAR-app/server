@@ -10,6 +10,9 @@ import authRouter from "./routes/auth/auth";
 import PinPointsRouter from "./routes/pinpoints";
 import RoomsRouter from "./routes/rooms";
 import FavoriteRouter from "./routes/favorites";
+import CategoryRouter from "./routes/categories";
+import LocationRouter from "./routes/locations";
+import SocietyRouter from "./routes/societies";
 
 // Swagger and Yamljs
 import swaggerUi from "swagger-ui-express";
@@ -74,7 +77,7 @@ const options = {
       },
     ],
   },
-  apis: ["./src/routes/auth/*.ts"],
+  apis: ["./src/routes/auth/*.ts", "./src/routes/*.ts"],
 };
 
 const specs = swaggerJSDoc(options);
@@ -88,6 +91,9 @@ app.use("/auth", authRouter);
 app.use("/pinpoints", checkJWT, PinPointsRouter);
 app.use("/rooms", checkJWT, RoomsRouter);
 app.use("/favorites", checkJWT, FavoriteRouter);
+app.use("/", CategoryRouter);
+app.use("/", LocationRouter);
+app.use("/societies", SocietyRouter);
 
 app.get("/", async (req, res) => {
   res.status(200).json({ message: "Server is working !" });
